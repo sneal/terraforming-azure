@@ -58,6 +58,7 @@ resource "azurerm_storage_container" "ops_manager_storage_container" {
 
 resource "azurerm_storage_blob" "ops_manager_image" {
   name                   = "opsman.vhd"
+  type                   = "page"
   resource_group_name    = "${var.resource_group_name}"
   storage_account_name   = "${azurerm_storage_account.ops_manager_storage_account.name}"
   storage_container_name = "${azurerm_storage_container.ops_manager_storage_container.name}"
