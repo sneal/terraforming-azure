@@ -1,15 +1,33 @@
 variable "env_name" {}
 variable "resource_group_name" {}
 variable "network_name" {}
-variable "bosh_deployed_vms_security_group_id" {}
-variable "pas_subnet_cidr" {}
-variable "services_subnet_cidr" {}
-variable "dynamic_services_subnet_cidr" {}
+
+variable "bosh_deployed_vms_security_group_id" {
+  default = ""
+}
+
+variable "pas_subnet_cidr" {
+  default = ""
+}
+
+variable "services_subnet_cidr" {
+  default = ""
+}
+
+variable "dynamic_services_subnet_cidr" {
+  default = ""
+}
+
+locals {
+  pas_subnet_name              = "${var.env_name}-pas-subnet"
+  services_subnet_name         = "${var.env_name}-services-subnet"
+  dynamic_services_subnet_name = "${var.env_name}-dynamic-services-subnet"
+}
 
 # ================================= Subnets ====================================
 
 resource "azurerm_subnet" "pas_subnet" {
-  name = "${var.env_name}-pas-subnet"
+  name = "${local.pas_subnet_name}"
 
   //  depends_on                = ["${var.resource_group_name}"]
   resource_group_name       = "${var.resource_group_name}"
@@ -19,7 +37,7 @@ resource "azurerm_subnet" "pas_subnet" {
 }
 
 resource "azurerm_subnet" "services_subnet" {
-  name = "${var.env_name}-services-subnet"
+  name = "${local.services_subnet_name}"
 
   //  depends_on                = ["${var.resource_group_name}"]
   resource_group_name       = "${var.resource_group_name}"
@@ -29,7 +47,7 @@ resource "azurerm_subnet" "services_subnet" {
 }
 
 resource "azurerm_subnet" "dynamic_services_subnet" {
-  name = "${var.env_name}-dynamic-services-subnet"
+  name = "${local.dynamic_services_subnet_name}"
 
   //  depends_on                = ["${var.resource_group_name}"]
   resource_group_name       = "${var.resource_group_name}"
