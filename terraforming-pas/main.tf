@@ -41,6 +41,20 @@ module "ops_manager" {
   subnet_id           = "${module.infra.infrastructure_subnet_id}"
 }
 
+module "pas_network" {
+  source = "../modules/pas_network"
+
+  env_name = "${var.env_name}"
+
+  pas_subnet_cidr              = "${var.pcf_pas_subnet}"
+  services_subnet_cidr         = "${var.pcf_services_subnet}"
+  dynamic_services_subnet_cidr = "${var.pcf_dynamic_services_subnet}"
+
+  resource_group_name                 = "${module.infra.resource_group_name}"
+  network_name                        = "${module.infra.network_name}"
+  bosh_deployed_vms_security_group_id = "${module.infra.bosh_deployed_vms_security_group_id}"
+}
+
 module "pas" {
   source = "../modules/pas"
 
@@ -48,9 +62,9 @@ module "pas" {
   location       = "${var.location}"
   env_short_name = "${var.env_short_name}"
 
-  pas_subnet_cidr              = "${var.pcf_pas_subnet}"
-  services_subnet_cidr         = "${var.pcf_services_subnet}"
-  dynamic_services_subnet_cidr = "${var.pcf_dynamic_services_subnet}"
+  pas_subnet              = "${module.pas_network.pas_subnet}"
+  services_subnet         = "${module.pas_network.services_subnet}"
+  dynamic_services_subnet = "${module.pas_network.dynamic_services_subnet}"
 
   cf_storage_account_name              = "${var.cf_storage_account_name}"
   cf_buildpacks_storage_container_name = "${var.cf_buildpacks_storage_container_name}"

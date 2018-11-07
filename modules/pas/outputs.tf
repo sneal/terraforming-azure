@@ -33,39 +33,39 @@ output "tcp_lb_name" {
 # Subnets
 
 output "pas_subnet_name" {
-  value = "${azurerm_subnet.pas_subnet.name}"
+  value = "${var.pas_subnet["name"]}"
 }
 
 output "pas_subnet_cidrs" {
-  value = ["${azurerm_subnet.pas_subnet.address_prefix}"]
+  value = ["${var.pas_subnet["cidr"]}"]
 }
 
 output "pas_subnet_gateway" {
-  value = "${cidrhost(azurerm_subnet.pas_subnet.address_prefix, 1)}"
+  value = "${cidrhost(var.pas_subnet["cidr"], 1)}"
 }
 
 output "services_subnet_name" {
-  value = "${azurerm_subnet.services_subnet.name}"
+  value = "${var.services_subnet["name"]}"
 }
 
 output "services_subnet_cidrs" {
-  value = ["${azurerm_subnet.services_subnet.address_prefix}"]
+  value = ["${var.services_subnet["cidr"]}"]
 }
 
 output "services_subnet_gateway" {
-  value = "${cidrhost(azurerm_subnet.services_subnet.address_prefix, 1)}"
+  value = "${cidrhost(var.services_subnet["cidr"], 1)}"
 }
 
 output "dynamic_services_subnet_name" {
-  value = "${azurerm_subnet.dynamic_services_subnet.name}"
+  value = "${var.dynamic_services_subnet["name"]}"
 }
 
 output "dynamic_services_subnet_cidrs" {
-  value = ["${azurerm_subnet.dynamic_services_subnet.address_prefix}"]
+  value = ["${var.dynamic_services_subnet["cidr"]}"]
 }
 
 output "dynamic_services_subnet_gateway" {
-  value = "${cidrhost(azurerm_subnet.dynamic_services_subnet.address_prefix, 1)}"
+  value = "${cidrhost(var.dynamic_services_subnet["cidr"], 1)}"
 }
 
 # Storage

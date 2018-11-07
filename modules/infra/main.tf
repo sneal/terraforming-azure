@@ -27,6 +27,16 @@ variable "pcf_infrastructure_subnet" {
   default = ""
 }
 
+variable "pcf_virtual_network_name" {
+  default = ""
+}
+
+variable "pcf_infrastructure_subnet_name" {
+  default = ""
+}
+
+# ============== Resource Group ===============
+
 resource "azurerm_resource_group" "pcf_resource_group" {
   name     = "${var.env_name}"
   location = "${var.location}"
