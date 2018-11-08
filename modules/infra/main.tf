@@ -18,20 +18,15 @@ variable "dns_suffix" {
   default = ""
 }
 
-variable "pcf_virtual_network_address_space" {
-  type    = "list"
-  default = []
-}
-
-variable "pcf_infrastructure_subnet" {
+variable "virtual_network_resource_group_name" {
   default = ""
 }
 
-variable "pcf_virtual_network_name" {
+variable "virtual_network_name" {
   default = ""
 }
 
-variable "pcf_infrastructure_subnet_name" {
+variable "infrastructure_subnet_name" {
   default = ""
 }
 
@@ -240,21 +235,10 @@ resource "azurerm_network_security_group" "bosh_deployed_vms_security_group" {
 
 # ============= Networking
 
-resource "azurerm_virtual_network" "pcf_virtual_network" {
-  name                = "${var.env_name}-virtual-network"
-  depends_on          = ["azurerm_resource_group.pcf_resource_group"]
-  resource_group_name = "${azurerm_resource_group.pcf_resource_group.name}"
-  address_space       = "${var.pcf_virtual_network_address_space}"
-  location            = "${var.location}"
-}
-
-resource "azurerm_subnet" "infrastructure_subnet" {
-  name                      = "${var.env_name}-infrastructure-subnet"
-  depends_on                = ["azurerm_resource_group.pcf_resource_group"]
-  resource_group_name       = "${azurerm_resource_group.pcf_resource_group.name}"
-  virtual_network_name      = "${azurerm_virtual_network.pcf_virtual_network.name}"
-  address_prefix            = "${var.pcf_infrastructure_subnet}"
-  network_security_group_id = "${azurerm_network_security_group.ops_manager_security_group.id}"
+data "azurerm_subnet" "infrastructure_subnet" {
+  name                 = "${var.infrastructure_subnet_name}"
+  resource_group_name  = "${var.virtual_network_resource_group_name}"
+  virtual_network_name = "${var.virtual_network_name}"
 }
 
 # ============= DNS
@@ -286,23 +270,23 @@ output "resource_group_name" {
 }
 
 output "network_name" {
-  value = "${azurerm_virtual_network.pcf_virtual_network.name}"
+  value = "${var.virtual_network_name}"
 }
 
 output "infrastructure_subnet_id" {
-  value = "${azurerm_subnet.infrastructure_subnet.id}"
+  value = "${data.azurerm_subnet.infrastructure_subnet.id}"
 }
 
 output "infrastructure_subnet_name" {
-  value = "${azurerm_subnet.infrastructure_subnet.name}"
+  value = "${data.azurerm_subnet.infrastructure_subnet.name}"
 }
 
 output "infrastructure_subnet_cidrs" {
-  value = ["${azurerm_subnet.infrastructure_subnet.address_prefix}"]
+  value = ["${data.azurerm_subnet.infrastructure_subnet.address_prefix}"]
 }
 
 output "infrastructure_subnet_gateway" {
-  value = "${cidrhost(azurerm_subnet.infrastructure_subnet.address_prefix, 1)}"
+  value = "${cidrhost(data.azurerm_subnet.infrastructure_subnet.address_prefix, 1)}"
 }
 
 output "security_group_id" {

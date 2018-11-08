@@ -13,13 +13,15 @@ terraform {
 module "infra" {
   source = "../modules/infra"
 
-  env_name                          = "${var.env_name}"
-  env_short_name                    = "${var.env_short_name}"
-  location                          = "${var.location}"
-  dns_subdomain                     = "${var.dns_subdomain}"
-  dns_suffix                        = "${var.dns_suffix}"
-  pcf_infrastructure_subnet         = "${var.pcf_infrastructure_subnet}"
-  pcf_virtual_network_address_space = "${var.pcf_virtual_network_address_space}"
+  env_name                    = "${var.env_name}"
+  env_short_name              = "${var.env_short_name}"
+  location                    = "${var.location}"
+  dns_subdomain               = "${var.dns_subdomain}"
+  dns_suffix                  = "${var.dns_suffix}"
+  infrastructure_subnet_name  = "${var.pcf_infrastructure_subnet_name}"
+
+  virtual_network_resource_group_name = "${var.pcf_virtual_network_resource_group_name}"
+  virtual_network_name                = "${var.pcf_virtual_network_name}"
 }
 
 module "ops_manager" {
@@ -44,15 +46,12 @@ module "ops_manager" {
 module "pas_network" {
   source = "../modules/pas_network"
 
-  env_name = "${var.env_name}"
+  pas_subnet_name              = "${var.pcf_pas_subnet_name}"
+  services_subnet_name         = "${var.pcf_services_subnet_name}"
+  dynamic_services_subnet_name = "${var.pcf_dynamic_services_subnet_name}"
 
-  pas_subnet_cidr              = "${var.pcf_pas_subnet}"
-  services_subnet_cidr         = "${var.pcf_services_subnet}"
-  dynamic_services_subnet_cidr = "${var.pcf_dynamic_services_subnet}"
-
-  resource_group_name                 = "${module.infra.resource_group_name}"
-  network_name                        = "${module.infra.network_name}"
-  bosh_deployed_vms_security_group_id = "${module.infra.bosh_deployed_vms_security_group_id}"
+  virtual_network_resource_group_name  = "${var.pcf_virtual_network_resource_group_name}"
+  virtual_network_name                 = "${module.infra.network_name}"
 }
 
 module "pas" {
