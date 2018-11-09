@@ -90,6 +90,10 @@ output "network_name" {
   value = "${module.infra.network_name}"
 }
 
+output "network_resource_group_name" {
+  value = "${var.pcf_virtual_network_resource_group_name}"
+}
+
 output "infrastructure_subnet_name" {
   value = "${module.infra.infrastructure_subnet_name}"
 }
@@ -104,6 +108,10 @@ output "infrastructure_subnet_cidrs" {
 
 output "infrastructure_subnet_gateway" {
   value = "${module.infra.infrastructure_subnet_gateway}"
+}
+
+output "infrastructure_subnet_reserved_range" {
+  value = "${module.infra.infrastructure_subnet_reserved_range}"
 }
 
 # TODO(cdutra): PAS
@@ -124,6 +132,10 @@ output "pas_subnet_gateway" {
   value = "${module.pas.pas_subnet_gateway}"
 }
 
+output "pas_subnet_reserved_range" {
+  value = "${module.pas.pas_subnet_reserved_range}"
+}
+
 output "services_subnet_name" {
   value = "${module.pas.services_subnet_name}"
 }
@@ -140,6 +152,10 @@ output "services_subnet_gateway" {
   value = "${module.pas.services_subnet_gateway}"
 }
 
+output "services_subnet_reserved_range" {
+  value = "${module.pas.services_subnet_reserved_range}"
+}
+
 output "dynamic_services_subnet_name" {
   value = "${module.pas.dynamic_services_subnet_name}"
 }
@@ -154,6 +170,10 @@ output "dynamic_services_subnet_cidrs" {
 
 output "dynamic_services_subnet_gateway" {
   value = "${module.pas.dynamic_services_subnet_gateway}"
+}
+
+output "dynamic_services_subnet_reserved_range" {
+  value = "${module.pas.dynamic_services_subnet_reserved_range}"
 }
 
 output "pcf_resource_group_name" {

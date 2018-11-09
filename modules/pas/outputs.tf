@@ -44,6 +44,10 @@ output "pas_subnet_gateway" {
   value = "${cidrhost(var.pas_subnet["cidr"], 1)}"
 }
 
+output "pas_subnet_reserved_range" {
+  value = "${cidrhost(var.pas_subnet["cidr"], 1)}-${cidrhost(var.pas_subnet["cidr"], 9)}"
+}
+
 output "services_subnet_name" {
   value = "${var.services_subnet["name"]}"
 }
@@ -56,6 +60,10 @@ output "services_subnet_gateway" {
   value = "${cidrhost(var.services_subnet["cidr"], 1)}"
 }
 
+output "services_subnet_reserved_range" {
+  value = "${cidrhost(var.services_subnet["cidr"], 1)}-${cidrhost(var.services_subnet["cidr"], 9)}"
+}
+
 output "dynamic_services_subnet_name" {
   value = "${var.dynamic_services_subnet["name"]}"
 }
@@ -66,6 +74,10 @@ output "dynamic_services_subnet_cidrs" {
 
 output "dynamic_services_subnet_gateway" {
   value = "${cidrhost(var.dynamic_services_subnet["cidr"], 1)}"
+}
+
+output "dynamic_services_subnet_reserved_range" {
+  value = "${cidrhost(var.dynamic_services_subnet["cidr"], 1)}-${cidrhost(var.dynamic_services_subnet["cidr"], 9)}"
 }
 
 # Storage
