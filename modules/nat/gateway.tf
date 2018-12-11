@@ -71,6 +71,21 @@ resource "azurerm_network_interface" "nat_instance_nic" {
   }
 }
 
+resource "azurerm_route_table" "nat_table" {
+  name                 = "${var.env_name}-nat-table"
+  location             = "${var.location}"
+  resource_group_name  = "${var.resource_group_name}"
+}
+
+resource "azurerm_route" "nat_rule1" {
+  name                   = "${var.env_name}-nat-rule1"
+  resource_group_name    = "${var.resource_group_name}"
+  route_table_name       = "${azurerm_route_table.nat_table.name}"
+  address_prefix         = "0.0.0.0/0"
+  next_hop_type          = "VirtualAppliance"
+  next_hop_in_ip_address = "${azurerm_network_interface.nat_instance_nic.private_ip_address}"
+}
+
 # ==================== NAT Instance(s)
 
 resource "azurerm_virtual_machine" "nat_instance_vm" {
@@ -136,24 +151,28 @@ resource "azurerm_virtual_machine_extension" "nat_instance" {
 
 # ==================== Outputs
 
-output "nat_public_ip" {
+output "public_ip" {
   value = "${azurerm_public_ip.nat_public_ip.ip_address}"
 }
 
-output "nat_private_ip" {
+output "private_ip" {
   value = "${azurerm_network_interface.nat_instance_nic.private_ip_address}"
 }
 
-output "nat_ssh_public_key" {
+output "ssh_public_key" {
   sensitive = true
   value     = "${tls_private_key.nat_instance.public_key_openssh}"
 }
 
-output "nat_ssh_private_key" {
+output "ssh_private_key" {
   sensitive = true
   value     = "${tls_private_key.nat_instance.private_key_pem}"
 }
 
-output "nat_subnet_id" {
+output "subnet_id" {
   value = "${azurerm_subnet.nat_subnet.id}"
+}
+
+output "route_table_id" {
+  value = "${azurerm_route_table.nat_table.id}"
 }

@@ -221,6 +221,32 @@ output "isolation_segment" {
   }
 }
 
+output "nat_public_ip" {
+  value = "${module.nat.public_ip}"
+}
+
+output "nat_private_ip" {
+  value = "${module.nat.private_ip}"
+}
+
+output "nat_ssh_public_key" {
+  sensitive = true
+  value     = "${module.nat.ssh_public_key}"
+}
+
+output "nat_ssh_private_key" {
+  sensitive = true
+  value     = "${module.nat.ssh_private_key}"
+}
+
+output "nat_subnet_id" {
+  value = "${module.nat.subnet_id}"
+}
+
+output "nat_route_table_id" {
+  value = "${module.nat.route_table_id}"
+}
+
 # Deprecated properties
 
 output "management_subnet_name" {

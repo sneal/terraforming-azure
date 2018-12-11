@@ -72,6 +72,7 @@ module "pas" {
   dns_zone_name                       = "${module.infra.dns_zone_name}"
   network_name                        = "${module.infra.network_name}"
   bosh_deployed_vms_security_group_id = "${module.infra.bosh_deployed_vms_security_group_id}"
+  nat_route_table_id                  = "${module.nat.route_table_id}"
 }
 
 module "certs" {
