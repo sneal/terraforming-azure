@@ -22,6 +22,16 @@ module "infra" {
   pcf_virtual_network_address_space = "${var.pcf_virtual_network_address_space}"
 }
 
+module "nat" {
+  source = "../modules/nat"
+
+  nat_subnet_cidr     = "${var.pcf_nat_subnet}"
+  env_name            = "${var.env_name}"
+  resource_group_name = "${module.infra.resource_group_name}"
+  network_name        = "${module.infra.network_name}"
+  location            = "${var.location}"
+}
+
 module "ops_manager" {
   source = "../modules/ops_manager"
 
@@ -62,6 +72,7 @@ module "pas" {
   dns_zone_name                       = "${module.infra.dns_zone_name}"
   network_name                        = "${module.infra.network_name}"
   bosh_deployed_vms_security_group_id = "${module.infra.bosh_deployed_vms_security_group_id}"
+  nat_route_table_id                  = "${module.nat.route_table_id}"
 }
 
 module "certs" {

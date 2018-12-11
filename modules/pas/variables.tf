@@ -14,4 +14,5 @@ variable "network_name" {}
 variable "pas_subnet_cidr" {}
 variable "services_subnet_cidr" {}
 
+variable "nat_route_table_id" {}
 variable "bosh_deployed_vms_security_group_id" {}
