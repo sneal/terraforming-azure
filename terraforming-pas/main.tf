@@ -22,6 +22,16 @@ module "infra" {
   pcf_virtual_network_address_space = "${var.pcf_virtual_network_address_space}"
 }
 
+module "nat" {
+  source = "../modules/nat"
+
+  nat_subnet_cidr     = "${var.pcf_nat_subnet}"
+  env_name            = "${var.env_name}"
+  resource_group_name = "${module.infra.resource_group_name}"
+  network_name        = "${module.infra.network_name}"
+  location            = "${var.location}"
+}
+
 module "ops_manager" {
   source = "../modules/ops_manager"
 
